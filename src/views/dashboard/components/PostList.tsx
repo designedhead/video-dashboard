@@ -26,7 +26,7 @@ const PostList = ({ data, isLoading, isError }: Props) => {
           .fill(1)
           .map((_, i) => (
             // eslint-disable-next-line react/no-array-index-key
-            <Skeleton w="full" h={44} key={i} />
+            <Skeleton w="full" h={44} key={i} borderRadius="lg" />
           ))}
       </SimpleGrid>
     );
