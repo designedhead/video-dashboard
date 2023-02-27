@@ -60,6 +60,7 @@ const Multiselect = ({ data, isLoading, isError, onChangeForm }: Props) => {
       value={value}
       onChange={handleOnChange as SelectOnChange}
       create
+      style={{ zIndex: 10 }}
     />
   );
 };

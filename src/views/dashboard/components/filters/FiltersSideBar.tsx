@@ -69,7 +69,7 @@ const FiltersSideBar = ({ isOpen, onClose, filters, setFilters }: Props) => {
               {softwareLoading ? (
                 <Spinner />
               ) : (
-                <Stack spacing={[1, 5]} direction={["column", "row"]}>
+                <Stack spacing={[1, 5]} direction="column">
                   {softwareError && <Text>Something went wrong</Text>}
                   {softwareList?.map((software) => {
                     const checked = filters?.software?.includes(software.value);

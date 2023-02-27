@@ -54,6 +54,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Post          Post[]
+  liked         Post[]    @relation("Liked")
 }
 
 model VerificationToken {
@@ -79,6 +80,7 @@ model Post {
   categories   Categories[]
   softwareType Software[]
   plugins      Plugin[]
+  likedBy      User[]       @relation("Liked")
 }
 
 model Categories {
