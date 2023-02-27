@@ -1,14 +1,12 @@
 import { Container } from "@chakra-ui/react";
-import { type GetServerSidePropsContext } from "next";
-
+import type { GetServerSidePropsContext } from "next";
 import React from "react";
-import View from "src/views/dashboard/Dashboard.View";
-
 import { getServerAuthSession } from "../server/auth";
+import CreateNew from "../views/create/CreateNew";
 
-const Home = () => (
-  <Container maxW="7xl" p={0}>
-    <View />
+const createNew = () => (
+  <Container maxW="7xl" px={10} w="full">
+    <CreateNew />
   </Container>
 );
 
@@ -27,9 +25,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: {},
   };
 }
-Home.defaultProps = {
+createNew.defaultProps = {
   // eslint-disable-next-line react/default-props-match-prop-types
   hasHeader: true,
 };
 
-export default Home;
+export default createNew;

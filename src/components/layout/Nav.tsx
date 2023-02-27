@@ -14,18 +14,22 @@ import {
   Center,
   HStack,
   Text,
+  IconButton,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 const PLACEHOLDER = "https://avatars.dicebear.com/api/male/username.svg";
 
-const links = [
-  { label: "Dashboard", href: "/" },
-  { label: "Shelf", href: "/shelf" },
-  { label: "Find Book", href: "/add-book" },
+type LinkType = {
+  label: string;
+  href: string;
+};
+
+const links: LinkType[] = [
+  // { label: "Dashboard", href: "/" }
 ];
 
 const Nav = () => {
@@ -39,21 +43,23 @@ const Nav = () => {
       px={4}
       zIndex={5}
       borderTop="6px solid"
-      borderTopColor="teal"
+      borderTopColor="brand.primary"
     >
       <Flex
         h={16}
         alignItems="center"
         justifyContent="space-between"
-        maxW="4xl"
+        maxW="7xl"
         mx="auto"
       >
         <Link href="/" passHref>
-          <Box cursor="pointer">Books AI</Box>
+          <Box cursor="pointer" fontWeight="medium">
+            Motion IO
+          </Box>
         </Link>
 
         <HStack spacing={4}>
-          {links.map((link) => {
+          {links?.map((link) => {
             const isSelected = router.pathname === link.href;
             return (
               <Link href={link.href} key={link.label} passHref>
@@ -61,7 +67,7 @@ const Nav = () => {
                   w="full"
                   variant="ghost"
                   size="sm"
-                  color={isSelected ? "teal" : "gray.600"}
+                  color={isSelected ? "brand.primary" : "gray.600"}
                   fontWeight="medium"
                 >
                   {link.label}
@@ -73,7 +79,10 @@ const Nav = () => {
 
         <Flex alignItems="center">
           <Stack direction="row" spacing={7}>
-            <Button onClick={toggleColorMode}>
+            <Link href="/create-new" passHref>
+              <Button rightIcon={<AddIcon />}>Add new</Button>
+            </Link>
+            <Button onClick={toggleColorMode} variant="outline">
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
 

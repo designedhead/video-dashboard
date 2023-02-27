@@ -1,7 +1,8 @@
 import { createTRPCRouter } from "./trpc";
-import { booksRouter } from "./routers/books";
-import { recommendationsRouter } from "./routers/recommendations";
-import { cronRouter } from "./routers/cron";
+import { categoriesRouter } from "./routers/categories";
+import { postsRouter } from "./routers/posts";
+import { softwareRouter } from "./routers/softwares";
+import { pluginsRouter } from "./routers/plugins";
 
 /**
  * This is the primary router for your server.
@@ -9,9 +10,10 @@ import { cronRouter } from "./routers/cron";
  * All routers added in /api/routers should be manually added here
  */
 export const appRouter = createTRPCRouter({
-  books: booksRouter,
-  recomendations: recommendationsRouter,
-  cron: cronRouter,
+  categories: categoriesRouter,
+  posts: postsRouter,
+  softwares: softwareRouter,
+  plugins: pluginsRouter,
 });
 
 // export type definition of API

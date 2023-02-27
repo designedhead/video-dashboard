@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ChakraProvider } from "@chakra-ui/react";
 import { api } from "../utils/api";
-
+import theme from "../theme/theme";
 import SiteLayout from "../components/layout/site-layout";
 
 type AppProps = {
@@ -20,7 +20,7 @@ type AppProps = {
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <SessionProvider session={pageProps.session}>
     <ReactQueryDevtools initialIsOpen={false} />
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <SiteLayout hasHeader={Component?.defaultProps?.hasHeader || false}>
         <Component {...pageProps} />
       </SiteLayout>

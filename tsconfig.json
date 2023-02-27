@@ -14,8 +14,23 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/utils/*": ["src/utils/*"],
+      "@/server/*": ["src/server/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/components/recomendations/RecomendationBanner.js", "src/components/pagination/index.js", "src/pages/auth/login.tsx", "src/pages/api/recomendations/cron.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.mjs",
+    "src/components/recomendations/RecomendationBanner.js",
+    "src/components/pagination/index.js",
+    "src/pages/auth/login.tsx",
+    "src/pages/api/recomendations/cron.js"
+  ],
   "exclude": ["node_modules"]
 }
