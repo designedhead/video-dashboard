@@ -69,6 +69,7 @@ const CreateNew = () => {
   };
   return (
     <Container w="full" mt={10} mx={0}>
+      {/* @ts-expect-error formdata */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={8}>
           <FormControl isInvalid={!!errors.name} isRequired>
