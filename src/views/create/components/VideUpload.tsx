@@ -30,7 +30,6 @@ const VideUpload = ({
     const cookie = getDriveCookies();
 
     let accessToken = cookie || token || undefined;
-    console.log("🚀  cookie:", { cookie, token });
 
     openPicker({
       clientId: env.NEXT_PUBLIC_GOOGLE_ID,

@@ -14,32 +14,29 @@ interface Props {
   setTerm: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SearchComponent = ({ term, setTerm }: Props) => {
-  const two = 2;
-  return (
-    <Box>
-      <InputGroup size="lg">
-        <InputLeftElement>
-          <Icon
-            as={Search2Icon}
-            w={4}
-            h={4}
-            color={useColorModeValue("blackAlpha.700", "whiteAlpha.700")}
-          />
-        </InputLeftElement>
-        <Input
-          placeholder="Search..."
-          type="search"
-          borderRadius="full"
-          bgColor={useColorModeValue("gray.100", "gray.900")}
-          border="none"
-          color={useColorModeValue("blackAlpha.700", "white")}
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
+const SearchComponent = ({ term, setTerm }: Props) => (
+  <Box>
+    <InputGroup size="lg">
+      <InputLeftElement>
+        <Icon
+          as={Search2Icon}
+          w={4}
+          h={4}
+          color={useColorModeValue("blackAlpha.700", "whiteAlpha.700")}
         />
-      </InputGroup>
-    </Box>
-  );
-};
+      </InputLeftElement>
+      <Input
+        placeholder="Search..."
+        type="search"
+        borderRadius="full"
+        bgColor={useColorModeValue("gray.100", "gray.900")}
+        border="none"
+        color={useColorModeValue("blackAlpha.700", "white")}
+        value={term}
+        onChange={(e) => setTerm(e.target.value)}
+      />
+    </InputGroup>
+  </Box>
+);
 
 export default SearchComponent;

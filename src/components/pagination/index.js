@@ -110,6 +110,7 @@ const Pagination = ({
                   ) : (
                     // eslint-disable-next-line
                     <Button
+                      // eslint-disable-next-line react/no-array-index-key
                       key={`${pageNumber}${i}`}
                       p={2}
                       onClick={() => onPageChange(pageNumber)}

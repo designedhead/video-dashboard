@@ -140,7 +140,7 @@ const View = () => {
           handleFilterRemove={handleFilterRemove}
           handleFilterReset={handleFilterReset}
         />
-
+        {/* @ts-expect-error data */}
         <PostList data={data} isLoading={isLoading} isError={isError} />
       </VStack>
     </HStack>

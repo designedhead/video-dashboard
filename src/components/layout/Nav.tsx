@@ -14,10 +14,9 @@ import {
   Center,
   HStack,
   Text,
-  IconButton,
 } from "@chakra-ui/react";
 import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -37,11 +36,15 @@ const Nav = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
       px={4}
-      zIndex={5}
+      zIndex={20}
       borderTop="6px solid"
       borderTopColor="brand.primary"
     >
@@ -86,42 +89,39 @@ const Nav = () => {
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
 
-            {session ? (
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded="full"
-                  variant="link"
-                  cursor="pointer"
-                  minW={0}
-                >
-                  <Avatar size="sm" src={session.user?.image || PLACEHOLDER} />
-                </MenuButton>
-                <MenuList alignItems="center">
-                  <br />
-                  <Center>
-                    <Avatar
-                      size="2xl"
-                      src={session.user?.image || PLACEHOLDER}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>{session.user?.name}</p>
-                  </Center>
-                  <Center>
-                    <Text fontSize="small" color="blackAlpha.500">
-                      {session.user?.email}
-                    </Text>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem onClick={() => void signOut()}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
-            ) : (
-              <Button onClick={() => void signIn()}>Login</Button>
-            )}
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded="full"
+                variant="link"
+                cursor="pointer"
+                minW={0}
+              >
+                <Avatar size="sm" src={session?.user?.image || PLACEHOLDER} />
+              </MenuButton>
+              <MenuList alignItems="center" zIndex={20}>
+                <br />
+                <Center>
+                  <Avatar
+                    size="2xl"
+                    src={session?.user?.image || PLACEHOLDER}
+                  />
+                </Center>
+                <br />
+                <Center>
+                  <p>{session?.user?.name}</p>
+                </Center>
+                <Center>
+                  <Text fontSize="small" color="blackAlpha.500">
+                    {session?.user?.email}
+                  </Text>
+                </Center>
+                <br />
+                <MenuDivider />
+                {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>
           </Stack>
         </Flex>
       </Flex>
