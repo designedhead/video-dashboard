@@ -9,6 +9,7 @@ const roboto = Roboto({
 });
 
 const theme = extendTheme({
+  initialColorMode: "dark",
   fonts: {
     roboto: roboto.style.fontFamily,
   },
