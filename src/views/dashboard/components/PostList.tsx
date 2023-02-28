@@ -1,16 +1,7 @@
 import { Container, SimpleGrid, Skeleton, Text } from "@chakra-ui/react";
-import type { Post, Categories } from "@prisma/client";
 import React from "react";
+import { type CompletePost } from "src/types/postTypes";
 import PostTile from "./PostTile";
-
-interface CompletePost extends Post {
-  categories: Categories[];
-  author: {
-    image: string | null;
-    id: string;
-    name: string | null;
-  };
-}
 
 interface Props {
   data: CompletePost[];

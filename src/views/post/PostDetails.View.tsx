@@ -6,19 +6,21 @@ import {
   Flex,
   Heading,
   HStack,
-  IconButton,
   Stack,
   Text,
   useColorModeValue,
   VStack,
+  Icon,
 } from "@chakra-ui/react";
 import React from "react";
 import { type ParsedPost } from "src/types/postTypes";
 import dynamic from "next/dynamic";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-// import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import ShareIcon from "@mui/icons-material/Share";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+// import ShareIcon from "@mui/icons-material/Share";
 import Link from "next/link";
+import { api } from "@/utils/api";
+import { AnimatePresence, motion } from "framer-motion";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -40,10 +42,27 @@ const PostDetails = ({ post }: { post: ParsedPost }) => {
     url,
     plugins,
     categories,
+    likedBy,
+    _count: { likedBy: likesCount },
   } = post;
 
   const isNew = new Date(createdAt) >= lastWeekStart;
   const [videoControls, setVideocontrols] = React.useState(false);
+  const [totalLikes, setTotalLikes] = React.useState(likesCount || 0);
+
+  const [liked, setLiked] = React.useState(!!likedBy.length);
+
+  const { mutate } = api.likes.create.useMutation();
+
+  const handleLike = () => {
+    mutate({ id: post.id, value: !liked });
+    if (liked) {
+      setTotalLikes(totalLikes - 1);
+    } else {
+      setTotalLikes(totalLikes + 1);
+    }
+    setLiked(!liked);
+  };
 
   return (
     <Stack
@@ -77,7 +96,13 @@ const PostDetails = ({ post }: { post: ParsedPost }) => {
             <Flex mt={5} gap={3} alignItems="center" wrap="wrap">
               <Text fontSize="sm">Categories:</Text>
               {categories.map((category) => (
-                <Badge key={category.id} color="pink">
+                <Badge
+                  key={category.id}
+                  color="pink"
+                  py={1}
+                  px={2}
+                  borderRadius="lg"
+                >
                   {category.value}
                 </Badge>
               ))}
@@ -105,22 +130,53 @@ const PostDetails = ({ post }: { post: ParsedPost }) => {
               Download
             </Button>
           </Link>
-          <IconButton
-            aria-label="Favourite"
-            icon={<ThumbUpOffAltIcon />}
-            variant="outline"
-            borderRadius="full"
-            p={3}
-            h="full"
-          />
-          <IconButton
+          <AnimatePresence>
+            <Button
+              aria-label="Favourite"
+              leftIcon={
+                liked ? (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0, y: 20 }}
+                    animate={{
+                      scale: 1,
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        type: "spring",
+                        duration: 0.8,
+                        bounce: 0.6,
+                      },
+                    }}
+                    exit={{
+                      x: -200,
+                      width: 0,
+                      opacity: 0,
+                      transition: { type: "spring", duration: 0.7 },
+                    }}
+                  >
+                    <Icon color="brand.primary" as={ThumbUpAltIcon} />
+                  </motion.div>
+                ) : (
+                  <ThumbUpOffAltIcon />
+                )
+              }
+              variant={liked ? "solid" : "outline"}
+              borderRadius="full"
+              p={3}
+              h="full"
+              onClick={handleLike}
+            >
+              {totalLikes} Likes
+            </Button>
+          </AnimatePresence>
+          {/* <IconButton
             aria-label="Share"
             icon={<ShareIcon />}
             variant="outline"
             borderRadius="full"
             p={3}
             h="full"
-          />
+          /> */}
         </HStack>
         {description && (
           <VStack alignItems="flex-start" mt={10} spacing={5}>

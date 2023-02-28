@@ -1,17 +1,18 @@
-import { Badge, Box, Center, Spinner, Text, VStack } from "@chakra-ui/react";
-import type { Post, Categories } from "@prisma/client";
+import {
+  Badge,
+  Box,
+  Center,
+  Spinner,
+  Text,
+  VStack,
+  Icon,
+  Flex,
+} from "@chakra-ui/react";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import Link from "next/link";
 import React from "react";
 import HoverVideoPlayer from "react-hover-video-player";
-
-interface CompletePost extends Post {
-  categories: Categories[];
-  author: {
-    image: string | null;
-    id: string;
-    name: string | null;
-  };
-}
+import { type CompletePost } from "src/types/postTypes";
 
 const now = new Date();
 const lastWeekStart = new Date(
@@ -25,7 +26,13 @@ interface Props {
 }
 
 const PostTile = ({ post }: Props) => {
-  const { title, preview_url, createdAt, id } = post;
+  const {
+    title,
+    preview_url,
+    createdAt,
+    id,
+    _count: { likedBy },
+  } = post;
   const isNew = createdAt >= lastWeekStart;
 
   return (
@@ -53,10 +60,25 @@ const PostTile = ({ post }: Props) => {
               alignItems="flex-start"
               justifyContent="flex-end"
               p={4}
+              spacing={0}
             >
               <Text fontSize="lg" fontWeight="bold">
                 {title}
               </Text>
+              <Flex
+                fontSize="xx-small"
+                bgColor="whiteAlpha.100"
+                color="whiteAlpha.600"
+                alignItems="center"
+                justifyContent="center"
+                gap={1}
+                p={1}
+                borderRadius="md"
+                aria-label={`${likedBy} Likes`}
+              >
+                {likedBy}
+                <Icon as={ThumbUpAltIcon} h={3} w={3} />
+              </Flex>
             </VStack>
           }
           loadingOverlay={

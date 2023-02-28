@@ -43,6 +43,11 @@ export const postsRouter = createTRPCRouter({
             },
             softwareType: true,
             plugins: true,
+            _count: {
+              select: {
+                likedBy: true,
+              },
+            },
           },
           skip: resultsSkip,
           take: resultsLimit,
@@ -88,7 +93,12 @@ export const postsRouter = createTRPCRouter({
           ...(input.sortBy &&
             input.sortBy !== "default" && {
               orderBy: {
-                createdAt: "desc",
+                ...(input.sortBy === "recent" && { createdAt: "desc" }),
+                ...(input.sortBy === "popular" && {
+                  likedBy: {
+                    _count: "desc",
+                  },
+                }),
               },
             }),
         });

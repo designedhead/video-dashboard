@@ -11,5 +11,23 @@ export type ParsedPost = Overwrite<
     softwareType: Software[];
     plugins: Plugin[];
     author: User;
+    _count: {
+      likedBy: number;
+    };
+    likedBy: User[];
+  }
+>;
+
+export type CompletePost = Overwrite<
+  Post,
+  {
+    categories: Categories[];
+    softwareType: Software[];
+    plugins: Plugin[];
+    author: User;
+    _count: {
+      likedBy: number;
+    };
+    likedBy: User[];
   }
 >;

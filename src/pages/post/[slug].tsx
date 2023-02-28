@@ -50,6 +50,20 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           name: true,
         },
       },
+      _count: {
+        select: {
+          likedBy: true,
+        },
+      },
+      likedBy: {
+        where: {
+          // @ts-expect-error Thinks there is no session
+          id: session?.user.id,
+        },
+        select: {
+          id: true,
+        },
+      },
     },
   });
   if (!post) return { notFound: true };
