@@ -60,7 +60,7 @@ const CreateNew = () => {
     mutate({
       name: formData.name,
       categories: formData.categories,
-      video: formData.video.id,
+      video: formData.video.secure_url,
       download: formData.download,
       description: formData.description,
       softwares: formData.softwares || [],

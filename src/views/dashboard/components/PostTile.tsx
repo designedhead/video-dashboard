@@ -33,7 +33,15 @@ const PostTile = ({ post }: Props) => {
     id,
     _count: { likedBy },
   } = post;
+
   const isNew = createdAt >= lastWeekStart;
+
+  const indexOfSplice = preview_url.indexOf("upload/") + 7;
+
+  const urlWithParams = `${preview_url.slice(
+    0,
+    indexOfSplice
+  )}h_400,w_710,q_60/${preview_url.slice(indexOfSplice)}`;
 
   return (
     <Link href={`/post/${id}`}>
@@ -47,7 +55,7 @@ const PostTile = ({ post }: Props) => {
         cursor="pointer"
       >
         <HoverVideoPlayer
-          videoSrc={`https://drive.google.com/uc?export=download&id=${preview_url}`}
+          videoSrc={urlWithParams}
           style={{ width: "100%", height: "100%" }}
           videoStyle={{
             height: "100%",

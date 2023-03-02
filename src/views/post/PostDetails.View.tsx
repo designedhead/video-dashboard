@@ -83,7 +83,7 @@ const PostDetails = ({ post }: { post: ParsedPost }) => {
           onMouseLeave={() => setVideocontrols(false)}
         >
           <ReactPlayer
-            url={`https://drive.google.com/uc?id=${preview_url}`}
+            url={preview_url}
             loop
             muted
             controls={videoControls}

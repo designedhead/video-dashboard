@@ -15,7 +15,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["lh3.googleusercontent.com", "books.google.com"],
+    domains: ["lh3.googleusercontent.com", "res.cloudinary.com"],
   },
 };
 export default config;

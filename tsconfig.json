@@ -30,7 +30,8 @@
     "src/components/recomendations/RecomendationBanner.js",
     "src/components/pagination/index.js",
     "src/pages/auth/login.tsx",
-    "src/pages/api/recomendations/cron.js"
+    "src/pages/api/recomendations/cron.js",
+    "src/helpers/useCloudinaryUploadWidget.js"
   ],
   "exclude": ["node_modules"]
 }

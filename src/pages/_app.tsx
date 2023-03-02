@@ -19,6 +19,11 @@ type AppProps = {
 };
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <SessionProvider session={pageProps.session}>
+    <script
+      src="https://upload-widget.cloudinary.com/global/all.js"
+      async
+      defer
+    />
     <ReactQueryDevtools initialIsOpen={false} />
     <ChakraProvider theme={theme}>
       <SiteLayout hasHeader={Component?.defaultProps?.hasHeader || false}>
