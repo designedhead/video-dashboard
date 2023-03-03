@@ -13,6 +13,10 @@ const Home = () => (
 );
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  context.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
   const session = await getServerAuthSession(context);
 
   if (!session)
