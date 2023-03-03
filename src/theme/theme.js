@@ -12,6 +12,8 @@ const theme = extendTheme({
   initialColorMode: "dark",
   fonts: {
     roboto: roboto.style.fontFamily,
+    heading: `${roboto.style.fontFamily}`,
+    body: `${roboto.style.fontFamily}`,
   },
   colors: {
     brand: {

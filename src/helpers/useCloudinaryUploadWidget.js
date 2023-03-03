@@ -23,8 +23,6 @@ const useCloudinaryUploadWidget = ({ onClose, onChange, options = {} }) => {
     if (typeof onClose === "function") {
       onClose({ images: videoRef.current });
     }
-    // reset images
-    // setVideo();
   }, [onClose]);
 
   // effect for initialising the widget
