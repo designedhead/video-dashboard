@@ -7,7 +7,6 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
-  HStack,
   Input,
   Stack,
   Textarea,
@@ -37,7 +36,12 @@ type FormDataType = {
   description?: string | undefined;
 };
 
-const CreateOrUpdate = ({ existingData }: { existingData: ParsedPost }) => {
+interface Props {
+  // eslint-disable-next-line react/require-default-props
+  existingData?: ParsedPost;
+}
+
+const CreateOrUpdate = ({ existingData }: Props) => {
   const defaultCategories =
     existingData?.categories?.map((category) => category.value) || [];
   const defaultSoftwares =

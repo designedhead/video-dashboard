@@ -71,7 +71,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
       likedBy: {
         where: {
-          // @ts-expect-error Thinks there is no session
           id: session?.user.id,
         },
         select: {

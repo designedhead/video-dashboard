@@ -5,7 +5,6 @@ import {
   MenuList,
   MenuItem,
   Icon,
-  Spinner,
   useToast,
   useDisclosure,
   Modal,
@@ -68,9 +67,7 @@ const PostOptions = ({ id }: { id: string }) => {
           <MenuItem>
             <Link href={`/post/${id}/update`}>Edit</Link>
           </MenuItem>
-          <MenuItem onClick={onOpen} icon={isLoading ? <Spinner /> : null}>
-            Delete
-          </MenuItem>
+          <MenuItem onClick={onOpen}>Delete</MenuItem>
         </MenuList>
       </Menu>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
