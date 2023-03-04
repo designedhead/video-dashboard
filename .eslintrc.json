@@ -28,6 +28,7 @@
   ],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
     "camelcase": "off",
     "import/extensions": "off",
     "import/named": "off",
