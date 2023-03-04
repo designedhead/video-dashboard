@@ -3,11 +3,11 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ChakraProvider } from "@chakra-ui/react";
+import Router from "next/router";
+import ProgressBar from "@badrap/bar-of-progress";
 import { api } from "../utils/api";
 import theme from "../theme/theme";
 import SiteLayout from "../components/layout/site-layout";
-import Router from "next/router";
-import ProgressBar from "@badrap/bar-of-progress";
 
 type AppProps = {
   pageProps: {
