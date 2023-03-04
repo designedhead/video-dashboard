@@ -23,11 +23,18 @@ interface Props {
   isError: boolean;
   // eslint-disable-next-line no-unused-vars
   onChangeForm: (e: string[]) => void;
+  defaultValues: string[];
 }
 
-const Multiselect = ({ data, isLoading, isError, onChangeForm }: Props) => {
+const Multiselect = ({
+  data,
+  isLoading,
+  isError,
+  onChangeForm,
+  defaultValues,
+}: Props) => {
   const { value, options, onChange } = useMultiSelect({
-    value: [],
+    value: defaultValues,
     options: data,
   }) as {
     value: string | string[] | undefined;

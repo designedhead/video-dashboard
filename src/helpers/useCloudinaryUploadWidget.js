@@ -1,7 +1,12 @@
 import React from "react";
 
 // exported component
-const useCloudinaryUploadWidget = ({ onClose, onChange, options = {} }) => {
+const useCloudinaryUploadWidget = ({
+  existing,
+  onClose,
+  onChange,
+  options = {},
+}) => {
   // state for containing cloudinay component
   const fileUploader = React.useRef();
 
@@ -13,17 +18,20 @@ const useCloudinaryUploadWidget = ({ onClose, onChange, options = {} }) => {
 
   // Function for callback when images changes (assuming uploads are complete)
   React.useEffect(() => {
-    if (typeof onChange === "function" && video) {
-      onChange({ video });
+    if (typeof onChange === "function" && video !== existing) {
+      onChange(video);
     }
-  }, [video, onChange]);
+  }, [video, onChange, existing]);
 
   // Function for callback when the modal is closed or errors.
-  const handleClose = React.useCallback(() => {
-    if (typeof onClose === "function") {
-      onClose({ images: videoRef.current });
-    }
-  }, [onClose]);
+  const handleClose = React.useCallback(
+    (result) => {
+      if (typeof onClose === "function" && video) {
+        onClose(result);
+      }
+    },
+    [onClose, video]
+  );
 
   // effect for initialising the widget
   React.useEffect(() => {
@@ -31,9 +39,9 @@ const useCloudinaryUploadWidget = ({ onClose, onChange, options = {} }) => {
       cloudName: "dclgfkzkq",
       uploadPreset: "cqwsol1y",
       sources: ["google_drive", "local"],
-      sourceKeys: {
-        google_drive: process.env.NEXT_PUBLIC_GOOGLE_ID,
-      },
+      // sourceKeys: {
+      //   google_drive: process.env.NEXT_PUBLIC_GOOGLE_ID,
+      // },
       singleUploadAutoClose: false,
       multiple: false,
       resourceType: "video",
@@ -73,16 +81,17 @@ const useCloudinaryUploadWidget = ({ onClose, onChange, options = {} }) => {
 
         if (!error && result?.event === "success") {
           const rawFile = result.info;
+          onClose(rawFile);
           setVideo(rawFile);
         }
       }
     );
 
     fileUploader.current = cloudinaryWidget;
-  }, [handleClose, options]);
+  }, [handleClose, options, onClose]);
 
   // function for clearing out old images
-  const resetImages = () => setVideo();
+  const resetVideos = () => setVideo();
 
   // interface to cloudinaryWidget
   const cloudinaryInterface = {
@@ -101,9 +110,8 @@ const useCloudinaryUploadWidget = ({ onClose, onChange, options = {} }) => {
   // returned state.
   return {
     fileUploader: cloudinaryInterface,
-    resetImages,
+    resetVideos,
     videoFile: video,
-    thumbnail: "",
   };
 };
 

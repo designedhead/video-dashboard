@@ -49,6 +49,9 @@ export const postsRouter = createTRPCRouter({
               },
             },
           },
+          where: {
+            deletedAt: null,
+          },
           skip: resultsSkip,
           take: resultsLimit,
           ...(activeFiltering && {
@@ -119,12 +122,14 @@ export const postsRouter = createTRPCRouter({
         video: z.string(),
         softwares: z.array(z.string()).optional(),
         plugins: z.array(z.string()).optional(),
+        id: z.string().optional(),
       })
     )
     .mutation(
       async ({
         ctx,
         input: {
+          id,
           name,
           categories,
           download,
@@ -135,53 +140,59 @@ export const postsRouter = createTRPCRouter({
         },
       }) => {
         try {
-          const newPost = await ctx.prisma.post.create({
-            data: {
-              title: name.trim(),
-              description: description || "",
-              preview_url: video,
-              url: download,
-              categories: {
-                connectOrCreate: categories.map((category) => ({
+          const obj = {
+            title: name.trim(),
+            description: description || "",
+            preview_url: video,
+            url: download,
+            categories: {
+              connectOrCreate: categories.map((category) => ({
+                where: {
+                  value: category,
+                },
+                create: {
+                  label: category,
+                  value: category,
+                },
+              })),
+            },
+            ...(softwares?.length && {
+              softwareType: {
+                connectOrCreate: softwares.map((software) => ({
                   where: {
-                    value: category,
+                    value: software,
                   },
                   create: {
-                    label: category,
-                    value: category,
+                    value: software,
                   },
                 })),
               },
-              ...(softwares?.length && {
-                softwareType: {
-                  connectOrCreate: softwares.map((software) => ({
-                    where: {
-                      value: software,
-                    },
-                    create: {
-                      value: software,
-                    },
-                  })),
-                },
-              }),
-              ...(plugins?.length && {
-                plugins: {
-                  connectOrCreate: plugins.map((plugin) => ({
-                    where: {
-                      value: plugin,
-                    },
-                    create: {
-                      value: plugin,
-                    },
-                  })),
-                },
-              }),
-              author: {
-                connect: {
-                  id: ctx.session.user.id,
-                },
+            }),
+            ...(plugins?.length && {
+              plugins: {
+                connectOrCreate: plugins.map((plugin) => ({
+                  where: {
+                    value: plugin,
+                  },
+                  create: {
+                    value: plugin,
+                  },
+                })),
+              },
+            }),
+            author: {
+              connect: {
+                id: ctx.session.user.id,
               },
             },
+          };
+
+          const newPost = await ctx.prisma.post.upsert({
+            where: {
+              id: id || "",
+            },
+            update: { ...obj, updatedAt: new Date() },
+            create: { ...obj },
           });
 
           return newPost;
@@ -204,6 +215,24 @@ export const postsRouter = createTRPCRouter({
             author: true,
             softwareType: true,
             plugins: true,
+          },
+        });
+        return post;
+      } catch (e) {
+        ThrowError(e);
+      }
+      return [];
+    }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input: { id }, ctx }) => {
+      try {
+        const post = await ctx.prisma.post.update({
+          where: {
+            id,
+          },
+          data: {
+            deletedAt: new Date(),
           },
         });
         return post;

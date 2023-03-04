@@ -13,9 +13,16 @@ export const likesRouter = createTRPCRouter({
           },
           data: {
             likedBy: {
-              connect: {
-                id: ctx.session.user.id,
-              },
+              ...(!!input.value && {
+                connect: {
+                  id: ctx.session.user.id,
+                },
+              }),
+              ...(!input.value && {
+                disconnect: {
+                  id: ctx.session.user.id,
+                },
+              }),
             },
           },
         });

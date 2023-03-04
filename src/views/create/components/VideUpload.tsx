@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   Center,
-  Container,
+  Flex,
   Spinner,
   Text,
   VStack,
@@ -28,13 +28,14 @@ const VideUpload = ({
 }) => {
   const {
     fileUploader: { open },
-    videoFile,
   } = useCloudinaryUploadWidget({
-    onClose: () => setVideo(videoFile as unknown as VideoObject),
+    existing: video,
+    onClose: (e) => {
+      setVideo(e as unknown as VideoObject);
+    },
   });
-
   return (
-    <Container p={0}>
+    <Flex p={0} w="full">
       {!video ? (
         <Button
           // onClick={handleOpenPicker}
@@ -49,13 +50,14 @@ const VideUpload = ({
         <Box
           borderRadius="lg"
           overflow="hidden"
-          w="577p"
-          h="322px"
+          w="100%"
+          h="auto"
           backgroundColor="brand.primary"
           position="relative"
         >
           <HoverVideoPlayer
             videoSrc={video?.secure_url}
+            videoStyle={{ height: "inherit" }}
             style={{ width: "100%", height: "100%" }}
             pausedOverlay={
               <VStack
@@ -69,7 +71,7 @@ const VideUpload = ({
                 <Text fontSize="xl" fontWeight="bold">
                   {video?.original_filename}
                 </Text>
-                <Text>{formatBytes(video?.bytes)}</Text>
+                <Text>{!!video?.bytes && formatBytes(video?.bytes)}</Text>
               </VStack>
             }
             loadingOverlay={
@@ -87,7 +89,7 @@ const VideUpload = ({
           />
         </Box>
       )}
-    </Container>
+    </Flex>
   );
 };
 

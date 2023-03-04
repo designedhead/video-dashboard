@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 // Prisma adapter for NextAuth, optional and can be removed
@@ -15,8 +16,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
       if (session.user) {
-        // eslint-disable-next-line no-param-reassign
         session.user.id = user.id;
+        // @ts-expect-error Schema
+        session.user.admin = user.admin;
       }
       return session;
     },

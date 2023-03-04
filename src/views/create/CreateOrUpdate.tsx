@@ -1,24 +1,28 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { api } from "@/utils/api";
 import {
+  Box,
   Button,
-  Container,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
   HStack,
   Input,
+  Stack,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
 
 import React from "react";
+import { type ParsedPost } from "src/types/postTypes";
+import { type VideoObject } from "src/types/VideoTypes";
+
 import { Controller, useForm } from "react-hook-form";
 
 import useGetCategories from "src/hooks/api/categories/queries/useGetCategories";
 import useCreatePost from "src/hooks/api/posts/mutations/useCreatePost";
-import { type VideoObject } from "src/types/VideoTypes";
+
 import FileSelect from "./components/FileSelect";
 import Multiselect from "./components/Multiselect";
 import VideUpload from "./components/VideUpload";
@@ -33,7 +37,14 @@ type FormDataType = {
   description?: string | undefined;
 };
 
-const CreateNew = () => {
+const CreateOrUpdate = ({ existingData }: { existingData: ParsedPost }) => {
+  const defaultCategories =
+    existingData?.categories?.map((category) => category.value) || [];
+  const defaultSoftwares =
+    existingData?.softwareType?.map((software) => software.value) || [];
+  const defaultPlugins =
+    existingData?.plugins?.map((plugin) => plugin.value) || [];
+
   const { data, isLoading, isError } = useGetCategories();
   const {
     data: softwareList,
@@ -52,7 +63,23 @@ const CreateNew = () => {
     handleSubmit,
     control,
     formState: { errors, isValid },
-  } = useForm({ mode: "all" });
+  } = useForm({
+    mode: "all",
+    defaultValues: {
+      name: existingData?.title || "",
+      description: existingData?.description || "",
+      video: existingData?.preview_url
+        ? {
+            secure_url: existingData?.preview_url,
+            original_filename: existingData?.title,
+          }
+        : "",
+      download: existingData?.url || "",
+      categories: defaultCategories || [],
+      softwares: defaultSoftwares || "",
+      plugins: defaultPlugins || "",
+    },
+  });
 
   const { mutate, createLoading } = useCreatePost();
 
@@ -65,10 +92,11 @@ const CreateNew = () => {
       description: formData.description,
       softwares: formData.softwares || [],
       plugins: formData.plugins || [],
+      ...(existingData != null && { id: existingData.id }),
     });
   };
   return (
-    <Container w="full" mt={10} mx={0}>
+    <Box w={{ base: "94%", md: "70%" }} my={10} mx={{ base: 4, md: 0 }}>
       {/* @ts-expect-error formdata */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={8}>
@@ -93,6 +121,7 @@ const CreateNew = () => {
                 rules={{ required: "Select at least 1 category." }}
                 render={({ field: { onChange } }) => (
                   <Multiselect
+                    defaultValues={defaultCategories}
                     data={data}
                     isLoading={isLoading}
                     isError={isError}
@@ -119,10 +148,7 @@ const CreateNew = () => {
                 required: "Select a preview video from your Google Drive.",
               }}
               render={({ field: { onChange, value } }) => (
-                <VideUpload
-                  setVideo={onChange}
-                  video={value as null | VideoObject}
-                />
+                <VideUpload setVideo={onChange} video={value as VideoObject} />
               )}
             />
             <FormHelperText>
@@ -156,7 +182,12 @@ const CreateNew = () => {
             <FormLabel>Description</FormLabel>
             <Textarea {...register("description")} />
           </FormControl>
-          <HStack w="full" justifyContent="space-between" spacing={4}>
+          <Stack
+            w="full"
+            justifyContent="space-between"
+            spacing={4}
+            direction={{ base: "column", md: "row" }}
+          >
             <FormControl>
               <FormLabel>Software</FormLabel>
               {softwareList != null && (
@@ -165,6 +196,7 @@ const CreateNew = () => {
                   name="softwares"
                   render={({ field: { onChange } }) => (
                     <Multiselect
+                      defaultValues={defaultSoftwares}
                       data={
                         softwareList.map((item) => ({
                           value: item.value,
@@ -188,6 +220,7 @@ const CreateNew = () => {
                   name="plugins"
                   render={({ field: { onChange } }) => (
                     <Multiselect
+                      defaultValues={defaultPlugins}
                       data={
                         pluginList.map((item) => ({
                           value: item.value,
@@ -208,19 +241,19 @@ const CreateNew = () => {
                 </FormErrorMessage>
               )}
             </FormControl>
-          </HStack>
+          </Stack>
           <Button
             w="full"
             type="submit"
             isDisabled={!isValid || createLoading}
             isLoading={createLoading}
           >
-            Create
+            {existingData == null ? "Create" : "Update"}
           </Button>
         </VStack>
       </form>
-    </Container>
+    </Box>
   );
 };
 
-export default CreateNew;
+export default CreateOrUpdate;

@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { type ParsedPost } from "src/types/postTypes";
+import { type Session } from "next-auth";
 import dynamic from "next/dynamic";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
@@ -21,6 +22,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import Link from "next/link";
 import { api } from "@/utils/api";
 import { AnimatePresence, motion } from "framer-motion";
+import PostOptions from "./components/PostOptions";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -31,7 +33,14 @@ const lastWeekStart = new Date(
   now.getDate() - 2
 );
 
-const PostDetails = ({ post }: { post: ParsedPost }) => {
+const PostDetails = ({
+  post,
+  session,
+}: {
+  post: ParsedPost;
+  session: Session;
+}) => {
+  console.log("🚀  session:", session);
   const {
     title,
     preview_url,
@@ -136,10 +145,11 @@ const PostDetails = ({ post }: { post: ParsedPost }) => {
               leftIcon={
                 liked ? (
                   <motion.div
-                    initial={{ scale: 0, opacity: 0, y: 20 }}
+                    initial={{ scale: 0, opacity: 0, y: 20, rotate: 90 }}
                     animate={{
                       scale: 1,
                       opacity: 1,
+                      rotate: 0,
                       y: 0,
                       transition: {
                         type: "spring",
@@ -169,6 +179,10 @@ const PostDetails = ({ post }: { post: ParsedPost }) => {
               {totalLikes} Likes
             </Button>
           </AnimatePresence>
+          {
+            // @ts-expect-error schema
+            session?.user?.admin && <PostOptions id={post?.id} />
+          }
           {/* <IconButton
             aria-label="Share"
             icon={<ShareIcon />}
