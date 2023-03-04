@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
           user: {
             ...session.user,
             id: user.id,
-            admin: user.admin,
+            admin: user.admin || false,
           },
         } as ExtendedSession;
         return extendedSession;

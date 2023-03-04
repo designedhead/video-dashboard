@@ -34,7 +34,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const id = context.params?.slug;
 
   if (!id) return { notFound: true };
-  // @ts-expect-error Thinks there is no admin
   if (!session?.user?.admin)
     return {
       redirect: {

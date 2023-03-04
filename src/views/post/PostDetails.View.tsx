@@ -178,10 +178,7 @@ const PostDetails = ({
               {totalLikes} Likes
             </Button>
           </AnimatePresence>
-          {
-            // @ts-expect-error schema
-            session?.user?.admin && <PostOptions id={post?.id} />
-          }
+          {session?.user?.admin && <PostOptions id={post?.id} />}
           {/* <IconButton
             aria-label="Share"
             icon={<ShareIcon />}
