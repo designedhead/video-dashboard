@@ -1,7 +1,7 @@
 import React from "react";
 import type { GetServerSidePropsContext } from "next";
 import { type ParsedPost } from "src/types/postTypes";
-import { type Session } from "next-auth";
+import type { ExtendedSession } from "src/types/auth";
 import { prisma } from "@/server/db";
 import { Container } from "@chakra-ui/react";
 import PostDetails from "src/views/post/PostDetails.View";
@@ -9,7 +9,7 @@ import { getServerAuthSession } from "../../../server/auth";
 
 interface Props {
   post: ParsedPost;
-  session: Session;
+  session: ExtendedSession;
 }
 
 const PostPage = ({ post, session }: Props) => (

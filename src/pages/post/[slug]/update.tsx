@@ -1,6 +1,7 @@
 import React from "react";
 import type { GetServerSidePropsContext } from "next";
 import { type ParsedPost } from "src/types/postTypes";
+import type { ExtendedSession } from "src/types/auth";
 import { prisma } from "@/server/db";
 import { Container } from "@chakra-ui/react";
 import CreateOrUpdate from "src/views/create/CreateOrUpdate";
@@ -21,7 +22,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
   );
-  const session = await getServerAuthSession(context);
+  const session = (await getServerAuthSession(context)) as ExtendedSession;
 
   if (!session)
     return {

@@ -13,8 +13,8 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import React from "react";
+import type { ExtendedSession } from "src/types/auth.js";
 import { type ParsedPost } from "src/types/postTypes";
-import { type Session } from "next-auth";
 import dynamic from "next/dynamic";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
@@ -38,7 +38,7 @@ const PostDetails = ({
   session,
 }: {
   post: ParsedPost;
-  session: Session;
+  session: ExtendedSession;
 }) => {
   const {
     title,
