@@ -40,7 +40,6 @@ const PostDetails = ({
   post: ParsedPost;
   session: Session;
 }) => {
-  console.log("🚀  session:", session);
   const {
     title,
     preview_url,
