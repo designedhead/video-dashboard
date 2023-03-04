@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ChakraProvider } from "@chakra-ui/react";
 import Router from "next/router";
+import Script from "next/script";
 import ProgressBar from "@badrap/bar-of-progress";
 import { api } from "../utils/api";
 import theme from "../theme/theme";
@@ -33,10 +34,9 @@ Router.events.on("routeChangeError", progress.finish);
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <SessionProvider session={pageProps.session}>
-    <script
+    <Script
+      id="cloudinary"
       src="https://upload-widget.cloudinary.com/global/all.js"
-      async
-      defer
     />
     <ReactQueryDevtools initialIsOpen={false} />
     <ChakraProvider theme={theme}>

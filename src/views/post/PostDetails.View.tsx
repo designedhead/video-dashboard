@@ -54,6 +54,13 @@ const PostDetails = ({
     _count: { likedBy: likesCount },
   } = post;
 
+  const indexOfSplice = preview_url.indexOf("upload/") + 7;
+
+  const urlWithParams = `${preview_url.slice(
+    0,
+    indexOfSplice
+  )}h_1080,w_1960,q_60/${preview_url.slice(indexOfSplice)}`;
+
   const isNew = new Date(createdAt) >= lastWeekStart;
   const [videoControls, setVideocontrols] = React.useState(false);
   const [totalLikes, setTotalLikes] = React.useState(likesCount || 0);
@@ -91,7 +98,7 @@ const PostDetails = ({
           onMouseLeave={() => setVideocontrols(false)}
         >
           <ReactPlayer
-            url={preview_url}
+            url={urlWithParams}
             loop
             muted
             controls={videoControls}
