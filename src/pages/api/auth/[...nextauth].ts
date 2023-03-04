@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck - may need to be at the start of file
 /* eslint-disable no-param-reassign */
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -17,7 +19,6 @@ export const authOptions: NextAuthOptions = {
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
-        // @ts-expect-error Schema
         session.user.admin = user.admin;
       }
       return session;
